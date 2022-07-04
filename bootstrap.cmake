@@ -84,13 +84,19 @@ if (DEFINED X3_GITHUB_MIRROR
                 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
         message(CHECK_START "Creating fossil hook for git export...")
-        execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add --type "after-receive" --command "%F git export -R %R"
-                RESULT_VARIABLE fsl_result)
-        if (fsl_result EQUAL 0)
-            message(CHECK_PASS "done")
+        execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
+                --type "after-receive"
+                --command "%F git export -R %R")
+        if (WIN32)
+            execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
+                    --type "before-commit"
+                    --command "start %F backoffice %R"
+                    --sequence "99")
         else ()
-            message(CHECK_PASS "failed: fossil exited with exit code ${fsl_result}")
-            message(SEND_ERROR "Could not create after-receive git export hook.")
+            execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
+                    --type "before-commit"
+                    --command "nohup %F backoffice %R &"
+                    --sequence "99")
         endif ()
     endif ()
 endif ()
