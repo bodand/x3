@@ -1,0 +1,277 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "use-ninja",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+    {
+      "name": "enable-warnings",
+      "hidden": true,
+      "warnings": {
+        "deprecated": true,
+        "dev": true,
+        "systemVars": false,
+        "uninitialized": false,
+        "unusedCli": true
+      }
+    },
+    {
+      "name": "enable-tests",
+      "hidden": true,
+      "cacheVariables": {
+        "X3_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "disable-tests",
+      "hidden": true,
+      "cacheVariables": {
+        "X3_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "enable-debug",
+      "inherits": [
+        "enable-tests",
+        "enable-warnings"
+      ],
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "enable-release",
+      "inherits": [
+        "disable-tests"
+      ],
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-only",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "X3_WIN32_BUILD": "ON"
+      }
+    },
+    {
+      "name": "not-windows-only",
+      "hidden": true,
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "X3_WIN32_BUILD": "OFF"
+      }
+    },
+    {
+      "name": "gcc-debug-build-mingw",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "windows-only"
+      ],
+      "displayName": "GCC/Debug",
+      "description": "A debug build using GCC",
+      "binaryDir": "_build-debug-gcc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW-GCC"
+        }
+      }
+    },
+    {
+      "name": "gcc-debug-build-native",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "not-windows-only"
+      ],
+      "displayName": "GCC/Debug",
+      "description": "A debug build using GCC",
+      "binaryDir": "_build-debug-gcc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-GCC"
+        }
+      }
+    },
+    {
+      "name": "clang-debug-build-mingw",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "windows-only"
+      ],
+      "displayName": "Clang/Debug",
+      "description": "A debug build using Clang",
+      "binaryDir": "_build-debug-clang",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW-Clang"
+        }
+      }
+    },
+    {
+      "name": "clang-debug-build-native",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "not-windows-only"
+      ],
+      "displayName": "Clang/Debug",
+      "description": "A debug build using Clang",
+      "binaryDir": "_build-debug-clang",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-Clang"
+        }
+      }
+    },
+    {
+      "name": "clang-debug-build-clang64",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "windows-only"
+      ],
+      "displayName": "Clang64/Debug",
+      "description": "A debug build using native MinGW Clang",
+      "binaryDir": "_build-debug-clang64",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Clang64-Clang"
+        }
+      }
+    },
+    {
+      "name": "msvc-debug-build",
+      "inherits": [
+        "use-ninja",
+        "enable-debug",
+        "windows-only"
+      ],
+      "displayName": "MSVC/Debug",
+      "description": "A debug build using MSVC",
+      "binaryDir": "_build-debug-msvc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-MSVC"
+        }
+      }
+    },
+    {
+      "name": "gcc-release-build-mingw",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "windows-only"
+      ],
+      "displayName": "GCC/Release",
+      "description": "A release build using GCC",
+      "binaryDir": "_build-release-gcc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW-GCC"
+        }
+      }
+    },
+    {
+      "name": "gcc-release-build-native",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "not-windows-only"
+      ],
+      "displayName": "GCC/Release",
+      "description": "A release build using GCC",
+      "binaryDir": "_build-release-gcc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-GCC"
+        }
+      }
+    },
+    {
+      "name": "clang-release-build-mingw",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "windows-only"
+      ],
+      "displayName": "Clang/Release",
+      "description": "A release build using Clang",
+      "binaryDir": "_build-release-clang",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW-Clang"
+        }
+      }
+    },
+    {
+      "name": "clang-release-build-native",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "not-windows-only"
+      ],
+      "displayName": "Clang/Release",
+      "description": "A release build using Clang",
+      "binaryDir": "_build-release-clang",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-Clang"
+        }
+      }
+    },
+    {
+      "name": "clang-release-build-clang64",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "windows-only"
+      ],
+      "displayName": "Clang64/Release",
+      "description": "A release build using native MinGW Clang",
+      "binaryDir": "_build-release-clang64",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Clang64-Clang"
+        }
+      }
+    },
+    {
+      "name": "msvc-release-build",
+      "inherits": [
+        "use-ninja",
+        "enable-release",
+        "windows-only"
+      ],
+      "displayName": "MSVC/Release",
+      "description": "A release build using MSVC",
+      "binaryDir": "_build-release-msvc",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Native-MSVC"
+        }
+      }
+    }
+  ]
+}
