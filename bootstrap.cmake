@@ -90,12 +90,13 @@ if (DEFINED X3_GITHUB_MIRROR
         if (WIN32)
             execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
                     --type "before-commit"
-                    --command "start %F backoffice %R"
-                    --sequence "99")
+                    --command "start \"timeout 5 /nobreak && %F backoffice %R\""
+                    --sequence "99"
+                    VERBATIM)
         else ()
             execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
                     --type "before-commit"
-                    --command "nohup %F backoffice %R &"
+                    --command "nohup sh -c \"sleep 5 && %F backoffice %R\" &"
                     --sequence "99")
         endif ()
     endif ()
