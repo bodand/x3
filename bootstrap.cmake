@@ -102,3 +102,11 @@ if (DEFINED X3_GITHUB_MIRROR
 endif ()
 
 message(STATUS "Bootstrapping directory ${CMAKE_CURRENT_SOURCE_DIR}")
+
+message(CHECK_START "Searching for ragel for Hyperscan...")
+find_program(_RagelExe ragel)
+if (_RagelExe)
+    message(CHECK_PASS "${_RagelExe}")
+else ()
+
+endif ()

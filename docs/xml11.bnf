@@ -1,0 +1,26 @@
+// This document was generated from the XML 1.1 specification by extracting the useful information from it.
+// x3 is lazy, and at the moment will also parse XML 1.0 with this grammar, however, this may change in the future.
+// Current source: https://www.w3.org/TR/2006/REC-xml11-20060816/
+
+document ::= ( prolog element Misc* ) ! ( Char* RestrictedChar Char* )
+
+Char ::= [#x1-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+RestrictedChar	   ::=   	[#x1-#x8] | [#xB-#xC] | [#xE-#x1F] | [#x7F-#x84] | [#x86-#x9F]
+
+/*
+NOTE: Warn on
+    [#x0-#x8], [#xB-#xC], [#xE-#x1F], [#x7F-#x84], [#x86-#x9F], [#xFDD0-#xFDDF],
+    [#x0FFFE-#x1FFFF], [#x2FFFE-#x2FFFF], [#x3FFFE-#x3FFFF],
+    [#x3FFFE-#x4FFFF], [#x5FFFE-#x5FFFF], [#x6FFFE-#x6FFFF],
+    [#x6FFFE-#x7FFFF], [#x8FFFE-#x8FFFF], [#x9FFFE-#x9FFFF],
+    [#xAFFFE-#xAFFFF], [#xBFFFE-#xBFFFF], [#xCFFFE-#xCFFFF],
+    [#xDFFFE-#xDFFFF], [#xEFFFE-#xEFFFF], [#xFFFFE-#xFFFFF],
+    [#x9FFFE-#x10FFFF].
+*/
+
+S ::= (#x20 | #x9 | #xD | #xA)+
+
+/*
+#xD needs to be "replaced with" #xA before any other processing.
+Prolly have the parser act the same way about both
+*/
