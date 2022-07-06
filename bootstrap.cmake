@@ -145,7 +145,21 @@ else ()
     message(CHECK_PASS "found: ${_PandocExe}")
 endif ()
 
-execute_process(COMMAND "${_FossilExe}" hook add
-        --type before-commit
-        --command "cmake -P utils/transform-readme.cmake" %F %A
-        --sequence 1)
+message(CHECK_START "Checking fossil hooks for README consistency...")
+execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook list
+        OUTPUT_VARIABLE fsl_hooks_list
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+if (fsl_hooks_list MATCHES [[command = cmake -P utils/transform-readme.cmake "%F" "%A"]])
+    message(CHECK_PASS "present")
+else ()
+    message(CHECK_PASS "creating")
+    if (WIN32)
+        set(PC "^%")
+    else ()
+        set(PC "%")
+    endif ()
+    execute_process(COMMAND "${_FossilExe}" hook add
+            --type before-commit
+            --command "cmake -P utils/transform-readme.cmake \"%F\" \"%A\""
+            --sequence 1)
+endif ()
