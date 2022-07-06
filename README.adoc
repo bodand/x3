@@ -5,7 +5,7 @@
 
 == What's X3?
 
-X3 is yet another XML parser project. It hopes to compete with libxml2 by being more cross-platform, maybe faster but not slower, and having more up-to-date utilities like xsltproc that understands XSLT 3.
+X3 is yet another XML parser project. It hopes to compete with libxml2 by being more cross-platform, maybe faster but not slower, and having more up-to-date utilities like `xsltproc` that understands XSLT 3.
 
 === Project Goal
 

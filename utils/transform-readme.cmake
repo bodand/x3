@@ -11,15 +11,8 @@ set(_FossilExe "${CMAKE_ARGV3}")
 find_program(_AsciidoctorExe asciidoctor REQUIRED)
 find_program(_PandocExe pandoc REQUIRED)
 
-file(STRINGS "${CMAKE_ARGV4}" AllThings)
-foreach (ln IN LISTS AllThings)
-    message("ln: ${ln}")
-endforeach ()
-
 file(STRINGS "${CMAKE_ARGV4}" FilesInCommit
         REGEX [[^EDITED[ \t]+README\.]])
-
-message(STATUS "f: ${FilesInCommit}")
 
 list(LENGTH FilesInCommit ReadmeCount)
 if (ReadmeCount EQUAL 1)
@@ -28,17 +21,19 @@ if (ReadmeCount EQUAL 1)
     if (ChangedReadme MATCHES [[^EDITED[ \t]+README.md]])
         message(SEND_ERROR
                 "Modified README.md, this'll be overwritten. Edit README.adoc instead. -- check failed: outsmarting causality failure")
-        if (WIN32)
-            execute_process(COMMAND start "timeout 1 /nobreak && \"${_FossilExe}\" revert README.md")
-        else ()
-            execute_process(COMMAND sh -c "sleep 1 && \"${_FossilExe}\" revert README.md")
-        endif ()
+        execute_process(COMMAND "${_FossilExe}" revert README.md)
         return()
     elseif (ChangedReadme MATCHES [[^EDITED[ \t]+README.adoc]])
         message(SEND_ERROR
                 "Modified README.adoc. Updating README.md to reflect the changes. Sit tight. -- check failed: broken dependency failure")
-        execute_process(COMMAND "${_AsciidoctorExe}" -b docbook -o - "README.adoc"
-                COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict - -o "README.md")
+        execute_process(
+                COMMAND cmd /c "${_AsciidoctorExe}" -b docbook README.adoc -o -
+                COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict -o "README.md"
+                OUTPUT_VARIABLE asciidoc_stdout
+                ERROR_VARIABLE asciidoc_stderr)
+        message(STATUS "Asciidoctor STDOUT: ${asciidoc_stdout}")
+        message(STATUS "Asciidoctor STDERR: ${asciidoc_stderr}")
+        #        file(REMOVE "~$README.docbook")
     else ()
         message(FATAL_ERROR "Help! I'm not prepared for this: ${ChangedReadme}. -- check failed: incomprehensible failure")
     endif ()
