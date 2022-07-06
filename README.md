@@ -2,7 +2,7 @@
 
 X3 is yet another XML parser project. It hopes to compete with libxml2
 by being more cross-platform, maybe faster but not slower, and having
-more up-to-date utilities like xsltproc that understands XSLT 3.
+more up-to-date utilities like `xsltproc` that understands XSLT 3.
 
 ## Project Goal
 
@@ -35,7 +35,7 @@ least the followings should work: FreeBSD, OpenBSD, NetBSD, Windows
 10/11, Linux. New Macs are therefore not supported because ARM, if, for
 some reason in the future, the project gains an increased amount of
 contributors a new non-Hyperscan backend could be written to support Mn
-(*n* ∈ 𝒩) Macs.
+(*n* ∈ ℕ) Macs.
 
 ## What does the name mean?
 
