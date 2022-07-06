@@ -25,12 +25,16 @@ list(LENGTH FilesInCommit ReadmeCount)
 if (ReadmeCount EQUAL 1)
     # one thing was changed, but not the other:
     list(GET FilesInCommit 0 ChangedReadme)
-    if (ChangedReadme STREQUAL "EDITED README.md")
+    if (ChangedReadme MATCHES [[^EDITED[ \t]+README.md]])
         message(SEND_ERROR
                 "Modified README.md, this'll be overwritten. Edit README.adoc instead. -- check failed: outsmarting causality failure")
-        execute_process(COMMAND "${_FossilExe}" revert README.md)
+        if (WIN32)
+            execute_process(COMMAND start "timeout 1 /nobreak && \"${_FossilExe}\" revert README.md")
+        else ()
+            execute_process(COMMAND sh -c "sleep 1 && \"${_FossilExe}\" revert README.md")
+        endif ()
         return()
-    elseif (ChangedReadme STREQUAL "EDITED README.adoc")
+    elseif (ChangedReadme MATCHES [[^EDITED[ \t]+README.adoc]])
         message(SEND_ERROR
                 "Modified README.adoc. Updating README.md to reflect the changes. Sit tight. -- check failed: broken dependency failure")
         execute_process(COMMAND "${_AsciidoctorExe}" -b docbook -o - "README.adoc"
