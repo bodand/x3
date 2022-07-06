@@ -5,7 +5,7 @@
 document ::= ( prolog element Misc* ) ! ( Char* RestrictedChar Char* )
 
 Char ::= [#x1-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
-RestrictedChar	   ::=   	[#x1-#x8] | [#xB-#xC] | [#xE-#x1F] | [#x7F-#x84] | [#x86-#x9F]
+RestrictedChar       ::=       [#x1-#x8] | [#xB-#xC] | [#xE-#x1F] | [#x7F-#x84] | [#x86-#x9F]
 
 /*
 NOTE: Warn on
@@ -24,3 +24,29 @@ S ::= (#x20 | #x9 | #xD | #xA)+
 #xD needs to be "replaced with" #xA before any other processing.
 Prolly have the parser act the same way about both
 */
+
+NameStartChar ::= ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+NameChar      ::= NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
+Name          ::= NameStartChar (NameChar)*
+Names         ::= Name (#x20 Name)*
+Nmtoken       ::= (NameChar)+
+Nmtokens      ::= Nmtoken (#x20 Nmtoken)*
+
+
+EntityValue   ::=       '"' ([^%&"] | PEReference | Reference)* '"'
+      |  "'" ([^%&'] | PEReference | Reference)* "'"
+AttValue      ::=       '"' ([^<&"] | Reference)* '"'
+            |  "'" ([^<&'] | Reference)* "'"
+SystemLiteral ::=       ('"' [^"]* '"') | ("'" [^']* "'")
+PubidLiteral  ::=       '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+PubidChar     ::=       #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
+
+
+CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
+
+
+Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+
+/* As an extension with a warning emitted, -- can appear in comments, even if the standard explicitly says it cannot,
+for SGML compatiblity. (But who uses SGML anyways, XML is general enough, imo SGML is just hell to parse
+without real benefit) */

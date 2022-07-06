@@ -11,7 +11,7 @@ cmake_minimum_required(VERSION 3.20)
 #
 # The following list of variables are understood (please keep this list up-to-date, because no-one wants to read CMake
 # code to find random variables):
-#  - X3_GITHUB_MIRROR:BOOL -- Whether to enable fossil's ability to export to git repositories
+#  - X3_GITHUB_MIRROR:BOOL -- Whether to enable fossil's ability to export to git repositories.
 #  - X3_GITHUB_DIRECTORY:PATH -- A directory where the local git checkout will be stored, defaults to a sibling of the
 #                                current project's directory with a `-git` suffix.
 #  - X3_GITHUB_CREDENTIALS:STRING -- The credentials to send to github; either username:password or access token. This
@@ -29,7 +29,7 @@ message(CHECK_START "Searching for fossil executable... ")
 if (NOT X3_FOSSIL_COMMAND STREQUAL "")
     find_program(_FossilExe fossil)
     if (_FossilExe)
-        message(CHECK_PASS "${_FossilExe}")
+        message(CHECK_PASS "found: ${_FossilExe}")
     else ()
         message(CHECK_FAIL "not found")
         message(FATAL_ERROR "Without fossil nothing will work. How did you even clone this repo w/o it?
@@ -91,8 +91,7 @@ if (DEFINED X3_GITHUB_MIRROR
             execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
                     --type "before-commit"
                     --command "start \"timeout 5 /nobreak && %F backoffice %R\""
-                    --sequence "99"
-                    VERBATIM)
+                    --sequence "99")
         else ()
             execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
                     --type "before-commit"
@@ -104,10 +103,46 @@ endif ()
 
 message(STATUS "Bootstrapping directory ${CMAKE_CURRENT_SOURCE_DIR}")
 
-message(CHECK_START "Searching for ragel for Hyperscan...")
-find_program(_RagelExe ragel)
-if (_RagelExe)
-    message(CHECK_PASS "${_RagelExe}")
+message(CHECK_START "Searching for asciidoctor...")
+find_program(_AsciidoctorExe asciidoctor)
+if (NOT _AsciidoctorExe)
+    message(CHECK_FAIL "not found - trying install, may need to rerun this with root/admin rights")
+    message(CHECK_START "Searching for gem...")
+    find_program(_GemExe gem)
+    if (_GemExe)
+        message(CHECK_PASS "found: ${_GemExe}")
+    else ()
+        message(CHECK_FAIL "not found - please install Ruby and add the gems executable to path")
+        message(FATAL_ERROR "Couldn't locate gem executable. Cannot proceed, please install Ruby.")
+    endif ()
+    if (WIN32)
+        execute_process(COMMAND "${_GemExe}" install asciidoctor)
+    else ()
+        execute_process(COMMAND sudo "${_GemExe}" install asciidoctor)
+    endif ()
 else ()
+    message(CHECK_PASS "found: ${_AsciidoctorExe}")
+endif ()
 
+message(STATUS "TEMP: $ENV{TEMP}")
+
+message(CHECK_START "Searching for pandoc...")
+find_program(_PandocExe pandoc)
+if (NOT _PandocExe)
+    message(CHECK_FAIL "not found")
+    if (WIN32)
+        message(WARNING "Proceeding to install Pandoc 2.18 -- if you know that a newer version is out, drop us a ticket.")
+        file(DOWNLOAD https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-windows-x86_64.msi
+                "pandoc-2.18.msi")
+        execute_process(
+                COMMAND timeout 1 /nobreak
+                COMMAND msiexec /i "pandoc-2.18.msi" ALLUSERS=1 /passive)
+        message(WARNING "Restart your terminal.")
+        set(_PandocExe "C:/Program Files/Pandoc/pandoc.exe")
+        file(REMOVE pandoc-2.18.msi)
+    else ()
+        message(FATAL_ERROR "Non-Windows pandoc install is work-in-progress. Please install Pandoc on your system.")
+    endif ()
+else ()
+    message(CHECK_PASS "found: ${_PandocExe}")
 endif ()
