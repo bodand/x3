@@ -26,7 +26,7 @@ There are multiple interpretations:
 
 * the project aims to replace or at least compete with libxml2, hence it's an xml library that's a version above libxml2, hence X**3**.
 
-* X3 is an **x**ml parser that's made in C**++**. Now {cxx} is sometimes stylized as CXX, because of fear of the plus symbols fucking things up. By adding all things together, we'd have the X{wj}{xx} library, but with the {xx} stylized to XXX. While this'd be a funny name, people don't appreciate humor, so this can be written as stem:[X^3], which in ASCII could be written lazily as just X3.
+* X3 is an **x**ml parser that's made in C**{xx}**. Now {cxx} is sometimes stylized as CXX, because of fear of the plus symbols fucking things up. By adding all things together, we'd have the X{wj}{xx} library, but with the {xx} stylized to XXX. While this'd be a funny name, people don't appreciate humor, so this can be written as stem:[X^3], which in ASCII could be written lazily as just X3.
 
 * X11 existing by itself is not confusing enough, we need a thing that's almost the same name, but has nothing to do with it.
 

@@ -2,16 +2,16 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-if (NOT CMAKE_ARGC EQUAL 2)
-    message(FATAL_ERROR "Usage: transform-readme.cmake <fossil_executable> <changelist_file>")
+if (NOT CMAKE_ARGC EQUAL 5)
+    message(FATAL_ERROR "Usage: cmake -P transform-readme.cmake <fossil_executable> <changelist_file>")
 endif ()
 
-set(_FossilExe "${CMAKE_ARGV1}")
+set(_FossilExe "${CMAKE_ARGV3}")
 
 find_program(_AsciidoctorExe asciidoctor REQUIRED)
 find_program(_PandocExe pandoc REQUIRED)
 
-file(STRINGS "${CMAKE_ARGV2}" FilesInCommit
+file(STRINGS "${CMAKE_ARGV4}" FilesInCommit
         REGEX [[^EDITED README\.]])
 
 list(LENGTH FilesInCommit ReadmeCount)
@@ -27,7 +27,7 @@ if (ReadmeCount EQUAL 1)
         message(SEND_ERROR
                 "Modified README.adoc. Updating README.md to reflect the changes. Sit tight. -- check failed: broken dependency failure")
         execute_process(COMMAND "${_AsciidoctorExe}" -b docbook -o - "README.adoc"
-                        COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict - -o "README.md
+                        COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict - -o "README.md")
     else ()
         message(FATAL_ERROR "Help! I'm not prepared for this: ${ChangedReadme}. -- check failed: incomprehensible failure")
     endif ()
