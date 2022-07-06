@@ -11,6 +11,11 @@ set(_FossilExe "${CMAKE_ARGV3}")
 find_program(_AsciidoctorExe asciidoctor REQUIRED)
 find_program(_PandocExe pandoc REQUIRED)
 
+file(STRINGS "${CMAKE_ARGV4}" AllThings)
+foreach (ln IN LISTS AllThings)
+    message("ln: ${ln}")
+endforeach ()
+
 file(STRINGS "${CMAKE_ARGV4}" FilesInCommit
         REGEX [[^EDITED README\.]])
 
@@ -29,7 +34,7 @@ if (ReadmeCount EQUAL 1)
         message(SEND_ERROR
                 "Modified README.adoc. Updating README.md to reflect the changes. Sit tight. -- check failed: broken dependency failure")
         execute_process(COMMAND "${_AsciidoctorExe}" -b docbook -o - "README.adoc"
-                        COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict - -o "README.md")
+                COMMAND "${_PandocExe}" -s -f docbook -t markdown_strict - -o "README.md")
     else ()
         message(FATAL_ERROR "Help! I'm not prepared for this: ${ChangedReadme}. -- check failed: incomprehensible failure")
     endif ()
