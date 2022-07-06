@@ -14,6 +14,8 @@ find_program(_PandocExe pandoc REQUIRED)
 file(STRINGS "${CMAKE_ARGV4}" FilesInCommit
         REGEX [[^EDITED README\.]])
 
+message(STATUS "f: ${FilesInCommit}")
+
 list(LENGTH FilesInCommit ReadmeCount)
 if (ReadmeCount EQUAL 1)
     # one thing was changed, but not the other:
