@@ -18,7 +18,7 @@ The followings are the goals set forth by X3. To be a successful project, they a
 * [ ] Extensions, because you always need extensions, with a flag to turn them off, that only mostly works. (i.e. GCC's `-pedantic-errors`)
 * [ ] All the while being at least as fast as the libxml2 library.
 
-Since the project relies on Intel's Hyperscan, compatibility is restricted to x86 systems, however, on the operating system level at least the followings should work: FreeBSD, OpenBSD, NetBSD, Windows 10/11, Linux. New Macs are therefore not supported because ARM, if, for some reason in the future, the project gains an increased amount of contributors a new non-Hyperscan backend could be written to support Mn (stem:[n in cc N]) Macs.
+Since the project relies on Intel's Hyperscan, compatibility is restricted to x86 systems, however, on the operating system level at least the followings should work: FreeBSD, OpenBSD, NetBSD, Windows 10/11, Linux. New Macs are therefore not supported because ARM, if, for some reason in the future, the project gains an increased amount of contributors a new non-Hyperscan backend could be written to support Mn (stem:[n in bbb N]) Macs.
 
 === What does the name mean?
 
