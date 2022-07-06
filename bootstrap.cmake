@@ -124,8 +124,6 @@ else ()
     message(CHECK_PASS "found: ${_AsciidoctorExe}")
 endif ()
 
-message(STATUS "TEMP: $ENV{TEMP}")
-
 message(CHECK_START "Searching for pandoc...")
 find_program(_PandocExe pandoc)
 if (NOT _PandocExe)
@@ -146,3 +144,8 @@ if (NOT _PandocExe)
 else ()
     message(CHECK_PASS "found: ${_PandocExe}")
 endif ()
+
+execute_process(COMMAND "${_FossilExe}" hook add
+        --type before-commit
+        --command "cmake -P utils/transform-readme.cmake" %F %A
+        --sequence 1)
