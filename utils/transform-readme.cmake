@@ -17,7 +17,7 @@ foreach (ln IN LISTS AllThings)
 endforeach ()
 
 file(STRINGS "${CMAKE_ARGV4}" FilesInCommit
-        REGEX [[^EDITED README\.]])
+        REGEX [[^EDITED[ \t]+README\.]])
 
 message(STATUS "f: ${FilesInCommit}")
 
