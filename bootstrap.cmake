@@ -158,7 +158,7 @@ else ()
     else ()
         set(PC "%")
     endif ()
-    execute_process(COMMAND "${_FossilExe}" hook add
+    execute_process(COMMAND "${X3_FOSSIL_COMMAND}" hook add
             --type before-commit
             --command "cmake -P utils/transform-readme.cmake \"%F\" \"%A\""
             --sequence 1)

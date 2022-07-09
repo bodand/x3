@@ -7,7 +7,7 @@
 
 X3 is yet another XML parser project. It hopes to compete with libxml2 by being more cross-platform, maybe faster but not slower, and having more up-to-date utilities like `xsltproc` that understands XSLT 3.
 
-=== Project Goal
+=== Project Goals
 
 The followings are the goals set forth by X3. To be a successful project, they are expected to be met.{wj}footnote:[I know full well they won't be.]
 
@@ -26,15 +26,15 @@ There are multiple interpretations:
 
 * the project aims to replace or at least compete with libxml2, hence it's an xml library that's a version above libxml2, hence X**3**.
 
-* X3 is an **x**ml parser that's made in C**{xx}**. Now {cxx} is sometimes stylized as CXX, because of fear of the plus symbols fucking things up. By adding all things together, we'd have the X{wj}{xx} library, but with the {xx} stylized to XXX. While this'd be a funny name, people don't appreciate humor, so this can be written as stem:[X^3], which in ASCII could be written lazily as just X3.
+* X3 is an Xml parser that's made in C{xx}. Now {cxx} is sometimes stylized as CXX, because of fear of the plus symbols fucking things up. By adding all things together, we'd have the X{wj}{xx} library, but with the {xx} stylized to XXX. While this'd be a funny name, people don't appreciate humor, so this can be written as stem:[X^3], which in ASCII could be written lazily as just X3.
 
 * X11 existing by itself is not confusing enough, we need a thing that's almost the same name, but has nothing to do with it.
 
 == Building
 
 Basic CMake build, at least from the user's perspective. 
-On the developer's side the CMake script is doing through idefinite hoops to make everything work as it should, but for many that's irrelevant.
-Because of this, if the following three step process doesn't build and install X3 on *your* machine, open a ticket as the anonymous user.
+On the developer's side the CMake script is doing through indefinite hoops to make everything work as it should, but for many that's irrelevant.
+Because of this, if the following three-step process doesn't build and install X3 on *your* machine, open a ticket as the anonymous user.
 
 The incantation is the default CMake, three-step dance:
 
@@ -46,6 +46,11 @@ cmake --build _build --target install <1>
 ----
 
 <1> This step may optionally need to be run with elevated privileges.
+
+=== Compiler/Platform support
+
+The entirety of X3 should build on all major platforms.
+Because of the Ragel dependency of Hyperscan, Windows/MSVC combo is not supported, until a work-around is found.footnote:[Maybe porting their build to CMake. It shouldn't be that hard, then we could easily integrate it.]
 
 === Running tests
 

@@ -4,7 +4,7 @@ X3 is yet another XML parser project. It hopes to compete with libxml2
 by being more cross-platform, maybe faster but not slower, and having
 more up-to-date utilities like `xsltproc` that understands XSLT 3.
 
-## Project Goal
+## Project Goals
 
 The followings are the goals set forth by X3. To be a successful
 project, they are expected to be met.⁠[1]
@@ -44,7 +44,7 @@ There are multiple interpretations:
 -   the project aims to replace or at least compete with libxml2, hence
     it’s an xml library that’s a version above libxml2, hence X**3**.
 
--   X3 is an **x**ml parser that’s made in C**++**. Now C++ is sometimes
+-   X3 is an Xml parser that’s made in C++. Now C++ is sometimes
     stylized as CXX, because of fear of the plus symbols fucking things
     up. By adding all things together, we’d have the X⁠++ library, but
     with the ++ stylized to XXX. While this’d be a funny name, people
@@ -57,9 +57,9 @@ There are multiple interpretations:
 # Building
 
 Basic CMake build, at least from the user’s perspective. On the
-developer’s side the CMake script is doing through idefinite hoops to
+developer’s side the CMake script is doing through indefinite hoops to
 make everything work as it should, but for many that’s irrelevant.
-Because of this, if the following three step process doesn’t build and
+Because of this, if the following three-step process doesn’t build and
 install X3 on **your** machine, open a ticket as the anonymous user.
 
 The incantation is the default CMake, three-step dance:
@@ -69,6 +69,12 @@ The incantation is the default CMake, three-step dance:
     cmake --build _build --target install 
 
 -   This step may optionally need to be run with elevated privileges.
+
+## Compiler/Platform support
+
+The entirety of X3 should build on all major platforms. Because of the
+Ragel dependency of Hyperscan, Windows/MSVC combo is not supported,
+until a work-around is found.[2]
 
 ## Running tests
 
@@ -130,3 +136,6 @@ file there. This also encourages smaller patches, not gigantic rewrites
 that likely wouldn’t be accepted anyways.
 
 [1] I know full well they won’t be.
+
+[2] Maybe porting their build to CMake. It shouldn’t be that hard, then
+we could easily integrate it.

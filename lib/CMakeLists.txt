@@ -26,18 +26,16 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-cmake_minimum_required(VERSION 3.20)
 
-cmake_policy(SET CMP0048 NEW)
+# This is just an aggregator CMakeLists.txt that calls all appropriate sub CMake files.
 
-project(x3
-        VERSION 0.1.0
-        DESCRIPTION "An Xml parser based on Hyperscan"
-        HOMEPAGE_URL "https://vcs.isdevnet.com/x3"
-        LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)
+macro(noisy_subdir dir)
+    list(APPEND CMAKE_MESSAGE_INDENT "[${dir}] ")
+    add_subdirectory(${dir})
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
+endmacro()
 
-add_subdirectory(lib)
-
-add_executable(x3 main.cpp)
-
+noisy_subdir(boost)
+noisy_subdir(ragel)
+set(RAGEL "${CMAKE_BINARY_DIR}/_deps/ragel-build/ragel" CACHE INTERNAL "The ragel executable -- our own" FORCE)
+noisy_subdir(hyperscan)

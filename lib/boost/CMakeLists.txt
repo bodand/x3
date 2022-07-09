@@ -26,18 +26,17 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-cmake_minimum_required(VERSION 3.20)
 
-cmake_policy(SET CMP0048 NEW)
+# Clones the Boost sources, for we only need the headers
 
-project(x3
-        VERSION 0.1.0
-        DESCRIPTION "An Xml parser based on Hyperscan"
-        HOMEPAGE_URL "https://vcs.isdevnet.com/x3"
-        LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)
+if (NOT IS_DIRECTORY "${CMAKE_BINARY_DIR}/lib/boost-src/boost_1_79_0")
+    file(DOWNLOAD
+            https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz
+            "${CMAKE_BINARY_DIR}/boost-1.79.tar.gz"
+            EXPECTED_HASH SHA3_256=da652097875064816a12b97a865ea15a2d3a466a9d55be2b83af3ff7b4a4fa92)
+    file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/boost-1.79.tar.gz"
+            DESTINATION "${CMAKE_BINARY_DIR}/lib/boost-src/"
+            VERBOSE)
+endif ()
 
-add_subdirectory(lib)
-
-add_executable(x3 main.cpp)
-
+set(BOOST_ROOT "${CMAKE_BINARY_DIR}/lib/boost-src/boost_1_79_0" CACHE STRING "The root of boost sources to use")

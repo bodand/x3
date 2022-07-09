@@ -26,18 +26,13 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-cmake_minimum_required(VERSION 3.20)
 
-cmake_policy(SET CMP0048 NEW)
+include(FetchContent)
 
-project(x3
-        VERSION 0.1.0
-        DESCRIPTION "An Xml parser based on Hyperscan"
-        HOMEPAGE_URL "https://vcs.isdevnet.com/x3"
-        LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)
-
-add_subdirectory(lib)
-
-add_executable(x3 main.cpp)
-
+message("BOOST_ROOT: ${BOOST_ROOT}")
+FetchContent_Declare(hyperscan
+        URL https://github.com/intel/hyperscan/archive/refs/tags/v5.4.0.tar.gz
+        URL_HASH SHA3_256=2faa74458dcb4c6244e4568babc45dd31669d02c3640ab1103c13aa203a30a9a
+        PATCH_COMMAND "${CMAKE_COMMAND}" "-DWD=${CMAKE_BINARY_DIR}/_deps/hyperscan-src" -P "${CMAKE_CURRENT_SOURCE_DIR}/patch-hyperscan.cmake")
+FetchContent_MakeAvailable(hyperscan)
+add_dependencies(hs ragel)

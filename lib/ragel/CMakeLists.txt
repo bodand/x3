@@ -26,18 +26,14 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-cmake_minimum_required(VERSION 3.20)
 
-cmake_policy(SET CMP0048 NEW)
+project(x3-ragel
+        VERSION 6.10)
 
-project(x3
-        VERSION 0.1.0
-        DESCRIPTION "An Xml parser based on Hyperscan"
-        HOMEPAGE_URL "https://vcs.isdevnet.com/x3"
-        LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)
+include(FetchContent)
 
-add_subdirectory(lib)
-
-add_executable(x3 main.cpp)
-
+FetchContent_Declare(Ragel
+        URL https://www.colm.net/files/ragel/ragel-6.10.tar.gz
+        URL_HASH SHA3_256=16845c8554b29c05f3b2136ff26c3b71e93d6d48968153dabef2ede2a11c59a4
+        PATCH_COMMAND "${CMAKE_COMMAND}" "-DWD=${CMAKE_BINARY_DIR}/_deps/ragel-src" "-DMSVC=${MSVC}" -P "${CMAKE_CURRENT_SOURCE_DIR}/patch-ragel.cmake")
+FetchContent_MakeAvailable(Ragel)
